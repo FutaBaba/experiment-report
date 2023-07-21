@@ -1,0 +1,47 @@
+use std::mem::ManuallyDrop;
+use std::thread;
+// use std::time::Duration;
+// use std::collections::VecDeque;
+use std::sync::Mutex;
+
+fn main() {
+
+    let mut lock = ManuallyDrop::new(Mutex::from(true));
+
+    unsafe{
+        let mut lock_x_taken:Mutex<bool> = ManuallyDrop::take(&mut lock);
+        let mut lock_y_taken:Mutex<bool> = ManuallyDrop::take(&mut lock);
+
+        let x_thread = thread::spawn(move ||
+            {
+                loop {
+                    // println!("Start loop x");
+                    let mut x_lock = lock_x_taken.lock().unwrap();
+                    // println!("lock is {}", x_lock);
+                    if *x_lock == true {
+                        *x_lock = false;
+                        thread::sleep_ms(1000);
+                        println!("Produced");
+                        *x_lock = true;
+                    }
+                }
+            });
+        let y_thread = thread::spawn(move || 
+            {
+                loop {
+                    let mut y_lock = lock_y_taken.lock().unwrap();
+                    // println!("Start loop y");
+                    // println!("lock is {}", y_lock);
+                    if *y_lock == true {
+                        *y_lock = false;
+                        thread::sleep_ms(1000);
+                        println!("Consumed");
+                        *y_lock = true;
+                    }
+                }
+            });
+       
+        let x_join = x_thread.join().unwrap();
+        let y_join = y_thread.join().unwrap();
+    }
+}

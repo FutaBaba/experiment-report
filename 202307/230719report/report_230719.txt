@@ -1,0 +1,133 @@
+2つのスレッドで書き換えを行うとき、一方のスレッドを3秒待たせた。
+sleepさせるスレッドを変えたとき、結果は変わった。
+x_threadを3秒sleepしたとき
+
+use std::mem::ManuallyDrop;
+use std::thread;
+use std::time::Duration;
+
+
+fn main() {
+    let x:String = String::from("Hello");
+
+
+    let mut x_drop = ManuallyDrop::new(x);
+    unsafe{
+        let mut x_taken:String = ManuallyDrop::take(&mut x_drop);
+        let mut y_taken:String = ManuallyDrop::take(&mut x_drop);
+
+        let x_thread = std::thread::spawn(move || {thread::sleep(Duration::from_secs(3));x_taken.push_str("x");println!("{}", x_taken); println!("World1"); ManuallyDrop::new(x_taken)});
+        let y_thread = std::thread::spawn(move || {y_taken.push_str("y");println!("{}", y_taken); println!("World2"); ManuallyDrop::new(y_taken)});
+       
+        let mut x_join = x_thread.join().unwrap();
+        let mut y_join = y_thread.join().unwrap();
+
+        let x_taken2:String = ManuallyDrop::take(&mut x_join);
+        // let y_taken2:String = ManuallyDrop::take(&mut y_join);
+
+        // ManuallyDrop::drop(&mut x_drop);
+        println!("{}", x_taken2);
+        // println!("{}", y_taken2);
+    }
+}
+
+baba@LAPTOP-A6A7D962:~/experiment-report/230719report/wait_thread$ cargo run
+   Compiling wait_thread v0.1.0 (/home/baba/experiment-report/230719report/wait_thread)
+warning: unused variable: `y_join`
+  --> src/main.rs:19:17
+   |
+19 |         let mut y_join = y_thread.join().unwrap();
+   |                 ^^^^^^ help: if this is intentional, prefix it with an underscore: `_y_join`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:19:13
+   |
+19 |         let mut y_join = y_thread.join().unwrap();
+   |             ----^^^^^^
+   |             |
+   |             help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` on by default
+
+warning: `wait_thread` (bin "wait_thread") generated 2 warnings (run `cargo fix --bin "wait_thread"` to apply 2 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.58s
+     Running `target/debug/wait_thread`
+Helloy
+World2
+Hellox
+World1
+Hellox
+baba@LAPTOP-A6A7D962:~/experiment-report/230719report/wait_thread$
+
+------------------------------------------------------------------------------------------------------
+2つのスレッドで書き換えを行うとき、一方のスレッドを3秒待たせた。
+sleepさせるスレッドを変えたとき、結果は変わった。
+y_threadを3秒sleepしたとき
+
+use std::mem::ManuallyDrop;
+use std::thread;
+use std::time::Duration;
+
+
+fn main() {
+    let x:String = String::from("Hello");
+
+
+    let mut x_drop = ManuallyDrop::new(x);
+    unsafe{
+        let mut x_taken:String = ManuallyDrop::take(&mut x_drop);
+        let mut y_taken:String = ManuallyDrop::take(&mut x_drop);
+
+        let x_thread = std::thread::spawn(move || {x_taken.push_str("x");println!("{}", x_taken); println!("World1"); ManuallyDrop::new(x_taken)});
+        let y_thread = std::thread::spawn(move || {thread::sleep(Duration::from_secs(3));y_taken.push_str("y");println!("{}", y_taken); println!("World2"); ManuallyDrop::new(y_taken)});
+       
+        let mut x_join = x_thread.join().unwrap();
+        let mut y_join = y_thread.join().unwrap();
+
+        let x_taken2:String = ManuallyDrop::take(&mut x_join);
+        // let y_taken2:String = ManuallyDrop::take(&mut y_join);
+
+        // ManuallyDrop::drop(&mut x_drop);
+        println!("{}", x_taken2);
+        // println!("{}", y_taken2);
+    }
+}
+
+baba@LAPTOP-A6A7D962:~/experiment-report/230719report/wait_thread$ cargo run
+   Compiling wait_thread v0.1.0 (/home/baba/experiment-report/230719report/wait_thread)
+warning: unused variable: `y_join`
+  --> src/main.rs:19:17
+   |
+19 |         let mut y_join = y_thread.join().unwrap();
+   |                 ^^^^^^ help: if this is intentional, prefix it with an underscore: `_y_join`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:19:13
+   |
+19 |         let mut y_join = y_thread.join().unwrap();
+   |             ----^^^^^^
+   |             |
+   |             help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` on by default
+
+warning: `wait_thread` (bin "wait_thread") generated 2 warnings (run `cargo fix --bin "wait_thread"` to apply 2 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.71s
+     Running `target/debug/wait_thread`
+Hellox
+World1
+Helloy
+World2
+Helloy
+baba@LAPTOP-A6A7D962:~/experiment-report/230719report/wait_thread$
+
+=>data raceが起きていることの確認
+
+------------------------------------------------------------------------------------------------------
+明日の目標=>
+producer-consumer問題について
+dropを行わないでメモリは大丈夫か? => 確認
