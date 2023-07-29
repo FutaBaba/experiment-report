@@ -1,0 +1,4 @@
+mutex_document_example_2の実行結果がよくわからなかった
+panicしているだけでは?
+=>mainスレッドでguardのlockが取得できるかどうかでguardの中の値が変化するようにプログラムを改変
+=>無名のスレッドでpanicさせると、mainスレッドでlockの取得はできていない

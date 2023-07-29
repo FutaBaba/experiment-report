@@ -1,0 +1,2 @@
+mutex_panicの例で、無名のスレッドでpanicさせなかったとき
+=>mainスレッドでlockの取得はできた

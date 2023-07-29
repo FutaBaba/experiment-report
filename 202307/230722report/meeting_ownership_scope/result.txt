@@ -1,0 +1,16 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230721report/meeting_ownership_scope$ cargo run
+   Compiling meeting_ownership_scope v0.1.0 (/home/baba/experiment-report/202307/230721report/meeting_ownership_scope)
+warning: function `f` is never used
+ --> src/main.rs:1:4
+  |
+1 | fn f (x:String) {
+  |    ^
+  |
+  = note: `#[warn(dead_code)]` on by default
+
+warning: `meeting_ownership_scope` (bin "meeting_ownership_scope") generated 1 warning
+    Finished dev [unoptimized + debuginfo] target(s) in 0.86s
+     Running `target/debug/meeting_ownership_scope`
+HelloWorld
+HelloWorld
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230721report/meeting_ownership_scope$

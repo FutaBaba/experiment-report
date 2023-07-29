@@ -1,0 +1,9 @@
+use std::sync::mpsc::channel;
+    
+fn main() {
+    // The call to recv() will return an error because the channel has already
+    // hung up (or been deallocated)
+    let (tx, rx) = channel::<i32>();
+    drop(tx);
+    assert!(rx.recv().is_err());
+}

@@ -1,0 +1,6 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230721report/meeting_ownership$ cargo run
+   Compiling meeting_ownership v0.1.0 (/home/baba/experiment-report/202307/230721report/meeting_ownership)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.98s
+     Running `target/debug/meeting_ownership`
+HelloWorld
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230721report/meeting_ownership$

@@ -1,0 +1,18 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230729/producer_consumer_mpmc$ cargo run
+   Compiling producer_consumer_mpmc v0.1.0 (/home/baba/experiment-report/202307/230729/producer_consumer_mpmc)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.80s
+     Running `target/debug/producer_consumer_mpmc`
+produce 30
+consume 30
+produce 30
+consume 30
+produce 30
+consume 30
+produce 40
+consume 40
+produce 30
+consume 30
+produce 40
+consume 40
+^C
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230729/producer_consumer_mpmc$

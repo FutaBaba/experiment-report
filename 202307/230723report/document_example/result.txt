@@ -1,0 +1,16 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230723report/document_example$ cargo run
+   Compiling document_example v0.1.0 (/home/baba/experiment-report/202307/230723report/document_example)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.77s
+     Running `target/debug/document_example`
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230723report/document_example$

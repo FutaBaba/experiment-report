@@ -1,0 +1,8 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230724report/mutex_panic$ cargo run
+   Compiling mutex_panic v0.1.0 (/home/baba/experiment-report/202307/230724report/mutex_panic)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.67s
+     Running `target/debug/mutex_panic`
+thread '<unnamed>' panicked at 'explicit panic', src/main.rs:15:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+1
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230724report/mutex_panic$

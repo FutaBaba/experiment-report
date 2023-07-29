@@ -1,0 +1,3 @@
+crossbeam_channel
+使い方は、std::channel::mpscと似ている
+unboundedでなくboundで上限個数指定(指定した数が0だと待ち合わせになる)

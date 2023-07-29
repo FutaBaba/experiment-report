@@ -1,0 +1,14 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230729/producer_consumer_queue$ cargo run
+   Compiling producer_consumer_queue v0.1.0 (/home/baba/experiment-report/202307/230729/producer_consumer_queue)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.62s
+     Running `target/debug/producer_consumer_queue`
+produce data
+consume 30
+produce data
+consume 30
+produce data
+consume 30
+produce data
+consume 30
+^C
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230729/producer_consumer_queue$

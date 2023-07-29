@@ -1,0 +1,6 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230724report/mutex_document_example_2$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/mutex_document_example_2`
+thread '<unnamed>' panicked at 'explicit panic', src/main.rs:15:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230724report/mutex_document_example_2$

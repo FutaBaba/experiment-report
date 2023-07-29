@@ -1,0 +1,2 @@
+producer_consumerの例にqueueを加えた
+うまくいったがまだspscのままである

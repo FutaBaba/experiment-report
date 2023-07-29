@@ -1,0 +1,2 @@
+multi producer, single consumer
+producerを増やすだけで可能である

@@ -1,0 +1,29 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230725report/channel_producer_consumer_sync$ cargo run
+   Compiling channel_producer_consumer_sync v0.1.0 (/home/baba/experiment-report/202307/230725report/channel_producer_consumer_sync)
+warning: unused import: `std::time::Duration`
+ --> src/main.rs:3:5
+  |
+3 | use std::time::Duration;
+  |     ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: `channel_producer_consumer_sync` (bin "channel_producer_consumer_sync") generated 1 warning (run `cargo fix --bin "channel_producer_consumer_sync"` to apply 1 suggestion)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.76s
+     Running `target/debug/channel_producer_consumer_sync`
+produce 32
+send 32
+produce 32
+send 32
+receive 32
+receive 32
+produce 32
+send 32
+produce 32
+send 32
+receive 32
+receive 32
+produce 32
+send 32
+receive 32
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230725report/channel_producer_consumer_sync$

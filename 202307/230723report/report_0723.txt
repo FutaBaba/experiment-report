@@ -1,0 +1,11 @@
+そもそもRustのMutexとは
+RustのMutexのマニュアル
+https://doc.rust-lang.org/std/sync/struct.Mutex.html
+
+Mutexとは、共有されたデータの保護に便利な相互排他プリミティブ
+ドキュメントに載っている例はdocument_exampleに
+
+・document_example
+lockはスコープから外れたときにunlockされる
+lock関数でmutexを獲得するまで現在のスレッドをブロックして現在のスレッドをブロックする
+lock関数の返り値の型はLockResult<MutexGuard<'_,T>>であり、基本的にlock関数の結果にunwrap関数を適用

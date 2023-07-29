@@ -1,0 +1,2 @@
+single producer, single consumer
+このとき、チャンネルは非同期であるので、スレッドをsleepさせている

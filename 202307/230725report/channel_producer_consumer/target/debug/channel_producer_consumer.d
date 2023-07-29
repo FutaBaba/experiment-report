@@ -1,0 +1,1 @@
+/home/baba/experiment-report/202307/230725report/channel_producer_consumer/target/debug/channel_producer_consumer: /home/baba/experiment-report/202307/230725report/channel_producer_consumer/src/main.rs

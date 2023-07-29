@@ -1,0 +1,36 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230724report/easy_lock$ cargo run
+warning: unused `Result` that must be used
+  --> src/main.rs:28:5
+   |
+28 |     producer.join();
+   |     ^^^^^^^^^^^^^^^
+   |
+   = note: this `Result` may be an `Err` variant, which should be handled
+   = note: `#[warn(unused_must_use)]` on by default
+help: use `let _ = ...` to ignore the resulting value
+   |
+28 |     let _ = producer.join();
+   |     +++++++
+
+warning: unused `Result` that must be used
+  --> src/main.rs:29:5
+   |
+29 |     consumer.join();
+   |     ^^^^^^^^^^^^^^^
+   |
+   = note: this `Result` may be an `Err` variant, which should be handled
+help: use `let _ = ...` to ignore the resulting value
+   |
+29 |     let _ = consumer.join();
+   |     +++++++
+
+warning: `easy_lock` (bin "easy_lock") generated 2 warnings
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/easy_lock`
+lock_producer is true
+produce data
+lock_producer is false
+lock_consumer is false
+consume data
+lock_consumer is true
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230724report/easy_lock$

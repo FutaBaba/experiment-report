@@ -1,0 +1,7 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230721report/meeting_ownership_function$ cargo run
+   Compiling meeting_ownership_function v0.1.0 (/home/baba/experiment-report/202307/230721report/meeting_ownership_function)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.89s
+     Running `target/debug/meeting_ownership_function`
+HelloWorld
+HelloWorld
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230721report/meeting_ownership_function$

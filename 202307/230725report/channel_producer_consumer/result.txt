@@ -1,0 +1,15 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230725report/channel_producer_consumer$ cargo run
+   Compiling channel_producer_consumer v0.1.0 (/home/baba/experiment-report/202307/230725report/channel_producer_consumer)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.71s
+     Running `target/debug/channel_producer_consumer`
+produce 32
+receive 32
+produce 32
+receive 32
+produce 32
+receive 32
+produce 32
+receive 32
+produce 32
+receive 32
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230725report/channel_producer_consumer$

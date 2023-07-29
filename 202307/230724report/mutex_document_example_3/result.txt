@@ -1,0 +1,4 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230724report/mutex_document_example_3$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/mutex_document_example_3`
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230724report/mutex_document_example_3$

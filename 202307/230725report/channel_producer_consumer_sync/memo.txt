@@ -1,0 +1,3 @@
+single producer,single consumerの例
+sync_channel(2)で同期チャンネル
+引数はバッファの容量

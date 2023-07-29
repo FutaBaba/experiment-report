@@ -1,0 +1,6 @@
+multi producer, multi consumerはどうやって実現する?
+crossbeam_channelにより実現できる
+crossbeam のgithub
+https://github.com/crossbeam-rs/crossbeam
+crossbeam-channelのgithub
+https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-channel

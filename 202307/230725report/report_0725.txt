@@ -1,0 +1,11 @@
+チャンネルを用いたproducer-consumer問題
+
+・Rustでのチャンネルのドキュメント(Multi-producer, single-consumer FIFO queue communication primitives.)
+https://doc.rust-lang.org/std/sync/mpsc/index.html
+
+channel関数は、(Sender, Receiver)のタプルを返す。
+このとき、バッファは無限
+非同期である
+channel関数で作ったチャンネルは、MPSCである
+
+multi producer, single consumerはできた

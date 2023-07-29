@@ -1,0 +1,14 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230729/producer_consumer$ cargo run
+   Compiling producer_consumer v0.1.0 (/home/baba/experiment-report/202307/230729/producer_consumer)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.54s
+     Running `target/debug/producer_consumer`
+produce data
+consume data
+produce data
+consume data
+produce data
+consume data
+produce data
+consume data
+^C
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230729/producer_consumer$

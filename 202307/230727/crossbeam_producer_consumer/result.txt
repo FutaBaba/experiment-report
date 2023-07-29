@@ -1,0 +1,25 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230727/crossbeam_producer_consumer$ cargo run
+   Compiling crossbeam_producer_consumer v0.1.0 (/home/baba/experiment-report/202307/230727/crossbeam_producer_consumer)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.77s
+     Running `target/debug/crossbeam_producer_consumer`
+produced by 1 32
+produced by 2 42
+1 receive 32
+2 receive 42
+produced by 1 32
+produced by 2 42
+1 receive 32
+2 receive 42
+produced by 1 32
+produced by 2 42
+2 receive 42
+1 receive 32
+produced by 1 32
+produced by 2 42
+2 receive 32
+1 receive 42
+produced by 2 42
+produced by 1 32
+2 receive 42
+1 receive 32
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230727/crossbeam_producer_consumer$

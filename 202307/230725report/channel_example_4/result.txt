@@ -1,0 +1,6 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230725report/channel_example_4$ cargo run
+   Compiling channel_example_4 v0.1.0 (/home/baba/experiment-report/202307/230725report/channel_example_4)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.69s
+     Running `target/debug/channel_example_4`
+53
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230725report/channel_example_4$

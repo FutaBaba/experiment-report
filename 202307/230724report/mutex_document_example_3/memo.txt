@@ -1,0 +1,3 @@
+scopeからぬける(dropする)とlockは解放される!!
+途中で解放したい場合は新たなスコープを作る、もしくはdrop関数を用いる
+=>Rustのownershipはlockにもあることになる

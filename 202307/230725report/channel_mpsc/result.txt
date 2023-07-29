@@ -1,0 +1,34 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230725report/channel_mpsc$ cargo run
+   Compiling channel_mpsc v0.1.0 (/home/baba/experiment-report/202307/230725report/channel_mpsc)
+warning: unused import: `std::time::Duration`
+ --> src/main.rs:3:5
+  |
+3 | use std::time::Duration;
+  |     ^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: `channel_mpsc` (bin "channel_mpsc") generated 1 warning (run `cargo fix --bin "channel_mpsc"` to apply 1 suggestion)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.01s
+     Running `target/debug/channel_mpsc`
+produced by 1 32
+produced by 2 42
+receive 32
+produced by 1 32
+receive 42
+produced by 2 42
+receive 32
+produced by 1 32
+produced by 2 42
+receive 42
+receive 32
+produced by 1 32
+receive 42
+produced by 2 42
+receive 32
+produced by 1 32
+receive 42
+produced by 2 42
+receive 32
+receive 42
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230725report/channel_mpsc$

@@ -1,0 +1,2 @@
+easy_lockでは単にproducerが1つデータを生成し、consumerがそれを消費しているだけだった
+ループさせている

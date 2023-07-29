@@ -1,0 +1,22 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230721report/meeting_double_free$ cargo run
+   Compiling meeting_double_free v0.1.0 (/home/baba/experiment-report/202307/230721report/meeting_double_free)
+warning: unused import: `std::thread`
+ --> src/main.rs:2:5
+  |
+2 | use std::thread;
+  |     ^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `std::time::Duration`
+ --> src/main.rs:3:5
+  |
+3 | use std::time::Duration;
+  |     ^^^^^^^^^^^^^^^^^^^
+
+warning: `meeting_double_free` (bin "meeting_double_free") generated 2 warnings (run `cargo fix --bin "meeting_double_free"` to apply 2 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.89s
+     Running `target/debug/meeting_double_free`
+HelloWorld
+HelloWorld
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230721report/meeting_double_free$
