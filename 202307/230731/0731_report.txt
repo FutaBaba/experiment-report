@@ -1,0 +1,11 @@
+unsafe implとは...?
+https://doc.rust-lang.org/std/keyword.unsafe.html
+unsafeのドキュメント
+
+unsafe => 型システムによってメモリ安全性が検証できないコードやインターフェース
+unsafeには2つの使い方
+
+・コンパイラがチェックできない箇所を宣言(unsafe fn,unsafe trait)
+
+・プログラマがチェックした箇所を宣言(unsafe {}, unsafe impl)
+=>コンパイラが確かめられない不変条件を守ることを約束

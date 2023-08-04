@@ -1,0 +1,16 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230731/send_experiment$ cargo run
+   Compiling send_experiment v0.1.0 (/home/baba/experiment-report/202307/230731/send_experiment)
+error[E0382]: borrow of moved value: `s`
+  --> src/main.rs:10:24
+   |
+9  |         tx.send(s).unwrap();
+   |                 - value moved here
+10 |         println!("{}", s);
+   |                        ^ value borrowed here after move
+   |
+   = note: move occurs because `s` has type `String`, which does not implement the `Copy` trait
+   = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+For more information about this error, try `rustc --explain E0382`.
+error: could not compile `send_experiment` (bin "send_experiment") due to previous error
+baba@LAPTOP-A6A7D962:~/experiment-report/202307/230731/send_experiment$

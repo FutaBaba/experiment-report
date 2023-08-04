@@ -1,0 +1,1 @@
+inner scopeがあることによってlockが解放される例

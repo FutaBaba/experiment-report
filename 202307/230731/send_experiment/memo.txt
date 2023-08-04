@@ -1,0 +1,2 @@
+sendがownershipも含めてsendしているかの確認
+=>エラーからownershipも含めてsendしている=>どうやって?

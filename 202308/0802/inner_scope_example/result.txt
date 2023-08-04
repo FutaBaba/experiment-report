@@ -1,0 +1,6 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202308/0802/inner_scope_example$ cargo run
+   Compiling inner_scope_example v0.1.0 (/home/baba/experiment-report/202308/0802/inner_scope_example)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.04s
+     Running `target/debug/inner_scope_example`
+m = Mutex { data: 6, poisoned: false, .. }
+baba@LAPTOP-A6A7D962:~/experiment-report/202308/0802/inner_scope_example$
