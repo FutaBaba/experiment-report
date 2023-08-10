@@ -1,0 +1,22 @@
+・契約プログラミング
+
+・アラインメント
+http://www5d.biglobe.ne.jp/~noocyte/Programming/Alignment.html
+上のページを参照
+・dangling pointer
+=>ポインタを指している先が解放されてしまったポインタ
+
+・Arcを用いて複数スレッドで読み込みをすることはできる?
+　結論(Mutexを用いなくても可能ではある)
+　into_innerでは不可能?
+　=>into_readのようなものを作る
+　https://doc.rust-lang.org/std/sync/struct.Arc.html#deref-behavior
+　derefのふるまい
+
+・Rustの拡張機能
+WSLからでできる
+rust-analyzer
+https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
+
+To do
+into_innerの実装を確認しつつinto_readのようなものを作る

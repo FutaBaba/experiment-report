@@ -1,0 +1,11 @@
+・Arcを用いて複数スレッドで読み込みをすることはできる?
+　結論(Mutexを用いなくても可能ではある)
+　into_innerでは不可能?
+　=>into_readのようなものを作る
+　https://doc.rust-lang.org/std/sync/struct.Arc.html#deref-behavior
+　derefのふるまい
+
+Memory Ordering 
+Cpuによるコンピュータメモリへのアクセス順序
+https://doc.rust-lang.org/std/sync/atomic/enum.Ordering.html
+https://doc.rust-lang.org/nomicon/atomics.html

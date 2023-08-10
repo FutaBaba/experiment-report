@@ -1,0 +1,7 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202308/0807/arc_experiment$ cargo run
+   Compiling arc_experiment v0.1.0 (/home/baba/experiment-report/202308/0807/arc_experiment)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.53s
+     Running `target/debug/arc_experiment`
+5
+5
+baba@LAPTOP-A6A7D962:~/experiment-report/202308/0807/arc_experiment$
