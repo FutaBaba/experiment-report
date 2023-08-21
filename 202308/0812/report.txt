@@ -1,0 +1,13 @@
+8/11ミーティング
+
+To do
+・Memory Orderingについて調べる
+・sequencial consistencyについて調べる
+
+・NewArcの実装について、様々なことをしっかりと確認する！
+=>疑問があれば調べつくせ
+
+・なぜWeakにしてdropしているのかを確認する
+
+・into_readはdropしてしまっている=>dropしないで読み取るだけにする!
+

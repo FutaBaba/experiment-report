@@ -26,7 +26,7 @@ impl<T: ?Sized> NewArc<T> {
     }
 }
 
-pub struct Weak<T: ?Sized> {
+pub struct NewWeak<T: ?Sized> {
     // This is a `NonNull` to allow optimizing the size of this type in enums,
     // but it is not necessarily a valid pointer.
     // `Weak::new` sets this to `usize::MAX` so that it doesn’t need
@@ -78,7 +78,7 @@ impl<T> NewArc<T>  {
         // safety conditions as `ptr::drop_in_place`.
         let inner = unsafe { ptr::read(Self::get_mut_unchecked(&mut this)) };
 
-        drop(Weak { ptr: this.ptr });
+        drop(NewWeak { ptr: this.ptr });
 
         Some(inner)
     }
@@ -104,7 +104,7 @@ impl<T> NewArc<T>  {
         // safety conditions as `ptr::drop_in_place`.
         let inner = unsafe { ptr::read(Self::get_mut_unchecked(&mut this)) };
 
-        drop(Weak { ptr: this.ptr });
+        drop(NewWeak { ptr: this.ptr });
 
         Some(inner)
     }
@@ -170,8 +170,10 @@ impl<T: ?Sized> Clone for NewArc<T> {
 }
 
 fn main () {
-    let x = NewArc::new(3);
+    let x = NewArc::new(String::from("Hello"));
     let y = NewArc::clone(&x);
+    let z1 = String::from("Hello");
+    let z2 = String::from("Hello");
 
     // Two threads calling `Arc::into_inner` on both clones of an `Arc`:
     let x_thread = std::thread::spawn(|| NewArc::into_read(x));
@@ -180,8 +182,11 @@ fn main () {
     let x_inner_value = x_thread.join().unwrap();
     let y_inner_value = y_thread.join().unwrap();
 
+    println!("World");
     assert!(matches!(
         (x_inner_value, y_inner_value),
-        (Some(3), Some(3))
+        (Some(z1), Some(z2))
     ));
+    println!("World");
+    //println!("{}",y_inner_value);
 }
