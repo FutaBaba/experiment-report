@@ -1,0 +1,12 @@
+・そもそもArcでRead onlyってできるの?
+=>into_innerを参考にする必要はある?
+=>Arcの中身を使う方法は?
+
+Arcのドキュメント
+https://doc.rust-lang.org/std/sync/struct.Arc.html
+
+Derefの部分に、中身に関する記述あり
+
+Arc<T>はDeref traitによって自動的にTに参照外しするため、Arc<T>の型の値に対してTのメソッドを呼び出せる。
+
+中身を取り出す方法=>into_innerである。

@@ -1,0 +1,31 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0902,0903,0904/multi_thread_experiment$ cargo run
+   Compiling multi_thread_experiment v0.1.0 (/home/baba/experiment-report/202309/0902,0903,0904/multi_thread_experiment)
+warning: unused variable: `a_clone`
+ --> src/main.rs:8:9
+  |
+8 |     let a_clone = Arc::clone(&a);
+  |         ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_a_clone`
+  |
+  = note: `#[warn(unused_variables)]` on by default
+
+error[E0382]: use of moved value: `a`
+  --> src/main.rs:16:28
+   |
+6  |     let a = Arc::new(String::from("Hello"));
+   |         - move occurs because `a` has type `Arc<String>`, which does not implement the `Copy` trait
+...
+10 |     let t1 = thread::spawn(move || {
+   |                            ------- value moved into closure here
+11 |         println!("{} {}", a, b);
+   |                           - variable moved due to use in closure
+...
+16 |     let t2 = thread::spawn(move || {
+   |                            ^^^^^^^ value used here after move
+17 |         thread::sleep(Duration::from_secs(10));
+18 |         println!("{}", a);
+   |                        - use occurs due to use in closure
+
+For more information about this error, try `rustc --explain E0382`.
+warning: `multi_thread_experiment` (bin "multi_thread_experiment") generated 1 warning
+error: could not compile `multi_thread_experiment` (bin "multi_thread_experiment") due to previous error; 1 warning emitted
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0902,0903,0904/multi_thread_experiment$

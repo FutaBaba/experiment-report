@@ -1,0 +1,33 @@
+ミーティングまとめ
+
+into_innerの中にacquireがある理由
+=>fetch_subで引いたことが伝わらなくなるから?
+
+To do
+・Memory Orderについてさらに詳しく読む
+　(evaluation order, sequential point, relaxedなどについて)
+
+・そもそもArcでRead onlyってできるの?
+=>into_innerを参考にする必要はある?
+=>Arcの中身を使う方法は?
+
+・そもそもの研究の目的の整理のためにgoogle documentなどでまとめなおしてみる(scoped threadなどについても)
+
+・以下のプログラムができるようにするには...?
+scopedthreadではできるかもしれないが、静的でなくとも動的に確認するライブラリなど作れない?
+
+use std::sync::Arc;
+use std::thread;
+
+fn main() {
+    let mut s = Arc::new(String::from("Hello"));
+
+    for _ in 0..10 {
+        let s_clone = Arc::clone(&s);
+
+        thread::spawn(move || {
+            println!("{}", s_clone);
+        });
+    }
+    s.push_str("d");
+}

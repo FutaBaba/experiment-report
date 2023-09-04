@@ -1,0 +1,8 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0902,0903,0904/multi_thread_experiment2$ cargo run
+   Compiling multi_thread_experiment2 v0.1.0 (/home/baba/experiment-report/202309/0902,0903,0904/multi_thread_experiment2)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.65s
+     Running `target/debug/multi_thread_experiment2`
+World
+Hello World
+Hello
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0902,0903,0904/multi_thread_experiment2$
