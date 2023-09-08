@@ -1,0 +1,21 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0907/scoped_thread_simple_example$ cargo run
+warning: unused variable: `t1`
+  --> src/main.rs:10:13
+   |
+10 |         let t1 = s.spawn(|| {
+   |             ^^ help: if this is intentional, prefix it with an underscore: `_t1`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `t2`
+  --> src/main.rs:16:13
+   |
+16 |         let t2 = s1.spawn(|| {
+   |             ^^ help: if this is intentional, prefix it with an underscore: `_t2`
+
+warning: `scoped_thread_simple_example` (bin "scoped_thread_simple_example") generated 2 warnings (run `cargo fix --bin "scoped_thread_simple_example"` to apply 2 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/scoped_thread_simple_example`
+Hello
+Hellobbbb
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0907/scoped_thread_simple_example$

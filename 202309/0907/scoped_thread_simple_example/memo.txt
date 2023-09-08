@@ -1,0 +1,1 @@
+scoped threadを分けたことで、joinしてRustのownershipが反映された例

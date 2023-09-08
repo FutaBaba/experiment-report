@@ -1,24 +1,23 @@
 use std::thread;
 use std::sync::Arc;
-use std::time::Duration;
+// use std::time::Duration;
 
 fn main() {
     let a = Arc::new(String::from("Hello"));
-    let b = Arc::new(String::from("World"));
-    let a_clone = Arc::clone(&a);
+    // let b = Arc::new(String::from("World"));
+    // let a_clone = Arc::clone(&a);
 
     thread::scope(|s| {
-        s.spawn(|| {
-            println!("{} {}", a, b);
+        let b = a;
+        let t1 = s.spawn(|| {
+            println!("{} {}", a);
         });
 
-        println!("{}",b);
-
-        s.spawn(|| {
-            thread::sleep(Duration::from_secs(5));
+        t1.join();
+        let t2 = s.spawn(|| {
+            a.push_str("bbbb");
             println!("{}", a);
         });
 
-        println!("{}",b);
     });
 }

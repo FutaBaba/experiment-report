@@ -1,0 +1,1 @@
+scoped thread1つのみでは、fractionalな例(片方で読み、片方で書き込みができない例)ができない

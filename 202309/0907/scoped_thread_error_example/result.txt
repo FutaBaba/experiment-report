@@ -1,0 +1,37 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0907/scoped_thread_error_example$ cargo run
+   Compiling scoped_thread_error_example v0.1.0 (/home/baba/experiment-report/202309/0907/scoped_thread_error_example)
+warning: unused import: `std::sync::Arc`
+ --> src/main.rs:2:5
+  |
+2 | use std::sync::Arc;
+  |     ^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused variable: `t2`
+  --> src/main.rs:15:13
+   |
+15 |         let t2 = s.spawn(|| {
+   |             ^^ help: if this is intentional, prefix it with an underscore: `_t2`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+error[E0499]: cannot borrow `a` as mutable more than once at a time
+  --> src/main.rs:9:19
+   |
+7  |     let b = &mut a;
+   |             ------ first mutable borrow occurs here
+8  |
+9  |     thread::scope(|s| {
+   |                   ^^^ second mutable borrow occurs here
+10 |         let t1 = s.spawn(|| {
+11 |             println!("{}", b);
+   |                            - first borrow later captured here by closure
+...
+16 |             a.push_str("bbbb");
+   |             - second borrow occurs due to use of `a` in closure
+
+For more information about this error, try `rustc --explain E0499`.
+warning: `scoped_thread_error_example` (bin "scoped_thread_error_example") generated 2 warnings
+error: could not compile `scoped_thread_error_example` (bin "scoped_thread_error_example") due to previous error; 2 warnings emitted
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0907/scoped_thread_error_example$

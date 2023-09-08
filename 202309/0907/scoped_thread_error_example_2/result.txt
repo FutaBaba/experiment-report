@@ -1,0 +1,33 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0907/scoped_thread_error_example_2$ cargo run
+   Compiling scoped_thread_error_example_2 v0.1.0 (/home/baba/experiment-report/202309/0907/scoped_thread_error_example_2)
+warning: unused variable: `t2`
+  --> src/main.rs:15:13
+   |
+15 |         let t2 = s.spawn(|| {
+   |             ^^ help: if this is intentional, prefix it with an underscore: `_t2`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+error[E0502]: cannot borrow `a` as mutable because it is also borrowed as immutable
+  --> src/main.rs:15:26
+   |
+9  |       thread::scope(|s| {
+   |                      - has type `&'1 Scope<'1, '_>`
+10 |           let t1 = s.spawn(|| {
+   |                    -       -- immutable borrow occurs here
+   |  __________________|
+   | |
+11 | |             println!("{}", a);
+   | |                            - first borrow occurs due to use of `a` in closure
+12 | |         });
+   | |__________- argument requires that `a` is borrowed for `'1`
+...
+15 |           let t2 = s.spawn(|| {
+   |                            ^^ mutable borrow occurs here
+16 |               a.push_str("bbbb");
+   |               - second borrow occurs due to use of `a` in closure
+
+For more information about this error, try `rustc --explain E0502`.
+warning: `scoped_thread_error_example_2` (bin "scoped_thread_error_example_2") generated 1 warning
+error: could not compile `scoped_thread_error_example_2` (bin "scoped_thread_error_example_2") due to previous error; 1 warning emitted
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0907/scoped_thread_error_example_2$
