@@ -1,0 +1,57 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0912~0915/handler_function_example$ cargo run
+   Compiling handler_function_example v0.1.0 (/home/baba/experiment-report/202309/0912~0915/handler_function_example)
+warning: unused import: `std::thread::ScopedJoinHandle`
+ --> src/main.rs:6:5
+  |
+6 | use std::thread::ScopedJoinHandle;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused variable: `t2`
+  --> src/main.rs:38:13
+   |
+38 |         let t2 = builder2.spawn_unchecked(|| {
+   |             ^^ help: if this is intentional, prefix it with an underscore: `_t2`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: function `f` is never used
+ --> src/main.rs:8:4
+  |
+8 | fn f<T> (t: JoinHandle<T>) {
+  |    ^
+  |
+  = note: `#[warn(dead_code)]` on by default
+
+warning: unused `Result` that must be used
+ --> src/main.rs:9:5
+  |
+9 |     t.join();
+  |     ^^^^^^^^
+  |
+  = note: this `Result` may be an `Err` variant, which should be handled
+  = note: `#[warn(unused_must_use)]` on by default
+help: use `let _ = ...` to ignore the resulting value
+  |
+9 |     let _ = t.join();
+  |     +++++++
+
+warning: unused `Result` that must be used
+  --> src/main.rs:36:9
+   |
+36 |         g(&a);//.unwrap().join();
+   |         ^^^^^
+   |
+   = note: this `Result` may be an `Err` variant, which should be handled
+help: use `let _ = ...` to ignore the resulting value
+   |
+36 |         let _ = g(&a);//.unwrap().join();
+   |         +++++++
+
+warning: `handler_function_example` (bin "handler_function_example") generated 5 warnings (run `cargo fix --bin "handler_function_example"` to apply 2 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.47s
+     Running `target/debug/handler_function_example`
+Hellobbbb
+
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0912~0915/handler_function_example$

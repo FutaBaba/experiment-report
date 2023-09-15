@@ -1,0 +1,7 @@
+今この時点では検査はできていない。
+(Arcに包むだけではできなかった。)
+
+DerefMut traitにより、通常のArcではmutableな操作ができなかったができるということは分かった
+
+mutableな操作の時と、immutableな操作の時でreference countを変化させればよい?
+(疑似的なfractional permission?)

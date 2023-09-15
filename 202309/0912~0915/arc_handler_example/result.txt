@@ -1,0 +1,66 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0912~0915/arc_handler_example$ RUST_BACKTRACE=1 cargo run
+   Compiling arc_handler_example v0.1.0 (/home/baba/experiment-report/202309/0912~0915/arc_handler_example)
+warning: unused import: `std::sync::Arc`
+ --> src/main.rs:4:5
+  |
+4 | use std::sync::Arc;
+  |     ^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused variable: `t2`
+   --> src/main.rs:142:13
+    |
+142 |         let t2 = builder2.spawn_unchecked(|| {
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_t2`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: field `weak` is never read
+  --> src/main.rs:35:5
+   |
+29 | struct BabaArcInner<T: ?Sized> {
+   |        ------------ field in this struct
+...
+35 |     weak: atomic::AtomicUsize,
+   |     ^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: function `f` is never used
+   --> src/main.rs:114:4
+    |
+114 | fn f<T> (t: JoinHandle<T>) {
+    |    ^
+
+warning: unused `Result` that must be used
+   --> src/main.rs:115:5
+    |
+115 |     t.join();
+    |     ^^^^^^^^
+    |
+    = note: this `Result` may be an `Err` variant, which should be handled
+    = note: `#[warn(unused_must_use)]` on by default
+help: use `let _ = ...` to ignore the resulting value
+    |
+115 |     let _ = t.join();
+    |     +++++++
+
+warning: unused `Result` that must be used
+   --> src/main.rs:140:9
+    |
+140 |         g(&a);//ここでcount +1
+    |         ^^^^^
+    |
+    = note: this `Result` may be an `Err` variant, which should be handled
+help: use `let _ = ...` to ignore the resulting value
+    |
+140 |         let _ = g(&a);//ここでcount +1
+    |         +++++++
+
+warning: `arc_handler_example` (bin "arc_handler_example") generated 6 warnings (run `cargo fix --bin "arc_handler_example"` to apply 2 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.52s
+     Running `target/debug/arc_handler_example`
+Hellobbbb
+
+baba@LAPTOP-A6A7D962:~/experiment-report/202309/0912~0915/arc_handler_example$

@@ -1,2 +1,30 @@
 spawn_unchecked
 => MaybeUninit(ManuallyDrop)によりownershipなど回避している
+
+修士論文題目案
+(キーワード)
+Rust, Fractional Ownership, 並列処理,静的検査(これはできなさそうだから動的にチェックするライブラリ)
+
+
+RustへのFractional Ownershipの導入
+
+
+動的検査ライブラリによるRustへのFractional Ownershipの導入
+
+Fractional OwnershipによるRustの並列処理の提案
+
+・RustへのFractional Ownershipの動的検査の導入
+
+ミーティングまとめ
+
+To Do
+・Maybe Uninitが何をやっているか、spawn_unchecked_のソースコードを見ることでさらなる理解を
+
+・unionって何?
+
+・浮動小数点数の表現方法について、unionでよくない例(0908/meeting_experiment)についてどうしてそうなるか確認する
+
+・0908/handler_function_exampleについて、aをArcにしたらできる?
+=>今現在この場合はundefined behaviorをするから、それをチェックするには、aをreference countみたいにすればよい(gで+1のように)
+
+・

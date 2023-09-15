@@ -4,8 +4,11 @@ use std::thread;
 
 fn main() {
     let mut a = String::from("Hello");
-    let b = &mut a;
+    let b = &a;
 
+    let s = thread::scope(|s| {
+        return s;
+    });
     thread::scope(|s| {
         let t1 = s.spawn(|| {
             println!("{}", b);
@@ -13,6 +16,7 @@ fn main() {
     });
 
     println!("{}", b);
+    
 
     thread::scope(|s1| {
         let t2 = s1.spawn(|| {
