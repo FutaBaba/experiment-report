@@ -79,6 +79,7 @@ impl<T: ?Sized> Deref for BabaArc<T> {
 
     #[inline]
     fn deref(&self) -> &T {
+        println!("Hello");
         &self.inner().data
     }
 }
@@ -117,11 +118,11 @@ fn f<T> (t: JoinHandle<T>) {
 
 fn g (a: &BabaArc<String>) -> Result<JoinHandle<()>, std::io::Error>{
     let builder = thread::Builder::new();
-    let new_a = a.clone();
+    // let new_a = a.clone();
     unsafe{
         let t1 = builder.spawn_unchecked(|| {
             thread::sleep(Duration::from_secs(1));
-            println!("{}", &new_a);
+            println!("{}", &a);
         });
         
        return t1;
