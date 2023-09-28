@@ -144,7 +144,7 @@ impl<T: ?Sized> Clone for BabaArc<T> {
     }
 }
 
-impl<T: ?Sized> Drop for BabaArc<T> {
+impl<T: ?Sized> Drop for &BabaArc<T> {
     fn drop(&mut self) {
         println!("drop");
     }
