@@ -108,9 +108,9 @@ impl<T: ?Sized> BabaArc<T> {
         if Self::write_count(&self) == 0 && Self::read_count(&self) == 0 {
             let old_size = self.inner().write.fetch_add(1, Relaxed);
         
-            if old_size > MAX_REFCOUNT {
-                abort();
-            }
+            // if old_size > MAX_REFCOUNT {
+            //     abort();
+            // }
             
 
             unsafe { Self::from_inner(self.ptr) }
@@ -221,9 +221,12 @@ fn main() {
         let t1 = g(&new_a);//ここでcount +1
     
         let t2 = builder2.spawn_unchecked(|| {
-            let mut mut_a = BabaArc::clone_mut(&new_a);
-            mut_a.push_str("bbbb");
-            drop(mut_a);
+            {
+                let mut mut_a = BabaArc::clone_mut(&new_a);
+                mut_a.push_str("bbbb");
+            }
+            
+            // drop(mut_a);
             let immut_a = BabaArc::clone_immut(&new_a);
             println!("{}", immut_a);
             drop(immut_a);
