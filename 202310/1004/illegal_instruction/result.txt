@@ -1,0 +1,45 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202310/1004/illegal_instruction$ cargo run
+   Compiling illegal_instruction v0.1.0 (/home/baba/experiment-report/202310/1004/illegal_instruction)
+warning: unused variable: `t1`
+   --> src/main.rs:215:13
+    |
+215 |         let t1 = g(&new_a);//ここでcount +1
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_t1`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `t2`
+   --> src/main.rs:217:13
+    |
+217 |         let t2 = builder2.spawn_unchecked(|| {
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_t2`
+
+warning: variable does not need to be mutable
+   --> src/main.rs:210:13
+    |
+210 |         let mut new_a = BabaArc::new(a);
+    |             ----^^^^^
+    |             |
+    |             help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` on by default
+
+warning: field `weak` is never read
+  --> src/main.rs:36:5
+   |
+30 | struct BabaArcInner<T: ?Sized> {
+   |        ------------ field in this struct
+...
+36 |     weak: atomic::AtomicUsize,
+   |     ^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `illegal_instruction` (bin "illegal_instruction") generated 4 warnings (run `cargo fix --bin "illegal_instruction"` to apply 3 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.67s
+     Running `target/debug/illegal_instruction`
+0, 0
+Hellobbbb
+0, 0
+Illegal instruction
+baba@LAPTOP-A6A7D962:~/experiment-report/202310/1004/illegal_instruction$

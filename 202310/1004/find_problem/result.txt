@@ -1,0 +1,48 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202310/1004/find_problem$ cargo run
+   Compiling find_problem v0.1.0 (/home/baba/experiment-report/202310/1004/find_problem)
+warning: unused variable: `t1`
+   --> src/main.rs:218:13
+    |
+218 |         let t1 = g(&new_a);//ここでcount +1
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_t1`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `t2`
+   --> src/main.rs:220:13
+    |
+220 |         let t2 = builder2.spawn_unchecked(|| {
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_t2`
+
+warning: variable does not need to be mutable
+   --> src/main.rs:213:13
+    |
+213 |         let mut new_a = BabaArc::new(a);
+    |             ----^^^^^
+    |             |
+    |             help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` on by default
+
+warning: field `weak` is never read
+  --> src/main.rs:36:5
+   |
+30 | struct BabaArcInner<T: ?Sized> {
+   |        ------------ field in this struct
+...
+36 |     weak: atomic::AtomicUsize,
+   |     ^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `find_problem` (bin "find_problem") generated 4 warnings (run `cargo fix --bin "find_problem"` to apply 3 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.52s
+     Running `target/debug/find_problem`
+0, 0
+0
+Hellobbbb
+0, 0
+18446744073709551615
+foo
+Illegal instruction
+baba@LAPTOP-A6A7D962:~/experiment-report/202310/1004/find_problem$

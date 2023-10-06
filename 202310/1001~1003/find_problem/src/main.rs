@@ -94,7 +94,7 @@ impl<T: ?Sized> BabaArc<T> {
             panic!("immutable error")
         }
         else {
-            self.inner().read.fetch_add(1, Relaxed);
+            let old_size = self.inner().read.fetch_add(1, Relaxed);
             
             // if old_size > MAX_REFCOUNT {
             //     abort();
