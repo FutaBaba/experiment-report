@@ -187,7 +187,6 @@ impl<T: ?Sized> Drop for BabaArc<T> {
         }
         else {
             Self::decrement_read_count(&self);
-            acquire!(self.inner().read);
         }
         // println!("drop");
     }
@@ -221,8 +220,9 @@ fn main() {
 
     let a = String::from("Hello");
 
+    let mut new_a = BabaArc::new(a);
+
     unsafe {
-        let mut new_a = BabaArc::new(a);
         // let check_a = &new_a;
 
         println!("{}, {}", BabaArc::write_count(&new_a), BabaArc::read_count(&new_a));

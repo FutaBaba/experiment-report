@@ -1,0 +1,56 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202310/1008~1010/babaarc_drop_experiment$ cargo run
+   Compiling babaarc_drop_experiment v0.1.0 (/home/baba/experiment-report/202310/1008~1010/babaarc_drop_experiment)
+warning: unused variable: `t1`
+   --> src/main.rs:328:13
+    |
+328 |         let t1 = g(&new_a);//ここでcount +1
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_t1`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `t2`
+   --> src/main.rs:330:13
+    |
+330 |         let t2 = builder2.spawn_unchecked(|| {
+    |             ^^ help: if this is intentional, prefix it with an underscore: `_t2`
+
+warning: variable does not need to be mutable
+   --> src/main.rs:324:13
+    |
+324 |         let mut new_a = BabaArcOrig::new(a);
+    |             ----^^^^^
+    |             |
+    |             help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` on by default
+
+warning: method `inner_mut` is never used
+  --> src/main.rs:72:8
+   |
+58 | impl<T: ?Sized> BabaArcOrig<T> {
+   | ------------------------------ method in this implementation
+...
+72 |     fn inner_mut(&mut self) -> &mut BabaArcInner<T> {
+   |        ^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `babaarc_drop_experiment` (bin "babaarc_drop_experiment") generated 4 warnings (run `cargo fix --bin "babaarc_drop_experiment"` to apply 3 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.79s
+     Running `target/debug/babaarc_drop_experiment`
+0, 0, from main
+0, 0, from g
+0, 0, from clone_mut
+0, 1, from clone_mut
+0, 1, from main
+0, 0, from main
+0, 0, from clone_immut
+1, 0, from clone_immut
+Hellobbbb, from main
+1, 0, from main
+0, 0, from main
+0, 0, from clone_immut
+1, 0, from clone_immut
+Hellobbbb, from g
+1, 0, from g
+baba@LAPTOP-A6A7D962:~/experiment-report/202310/1008~1010/babaarc_drop_experiment$

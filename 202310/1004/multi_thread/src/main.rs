@@ -205,8 +205,7 @@ fn g (a: &BabaArc<String>) -> Result<JoinHandle<()>, std::io::Error>{
         let builder = thread::Builder::new();
         let t1 = builder.spawn_unchecked(|| {
             thread::sleep(Duration::from_secs(1));
-            let new_a = BabaArc::clone_immut(a); //ここで問題が起きているっぽい?
-            println!("{}, from g", BabaArc::read_count(&a));
+            let new_a = BabaArc::clone_immut(a);
             println!("{}, from g", new_a);
             drop(new_a)
         });

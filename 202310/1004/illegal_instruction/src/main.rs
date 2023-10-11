@@ -90,13 +90,16 @@ impl<T: ?Sized> BabaArc<T> {
     }
 
     pub fn clone_immut(&self) -> BabaArc<T> {
+        println!("{}, {}, from clone_immut", Self::read_count(&self), Self::write_count(&self));
         if Self::write_count(&self) != 0 {
             panic!("immutable error")
         }
         else {
             let old_size = self.inner().read.fetch_add(1, Relaxed);
+            println!("{}, {}, from clone_immut", Self::read_count(&self), Self::write_count(&self));
             
             if old_size > MAX_REFCOUNT {
+                println!("foo");
                 abort();
             }
 
@@ -105,14 +108,18 @@ impl<T: ?Sized> BabaArc<T> {
     }
 
     fn clone_mut(&self) -> BabaArc<T> {
+        println!("{}, {}, from clone_mut", Self::read_count(&self), Self::write_count(&self));
         if Self::write_count(&self) == 0 && Self::read_count(&self) == 0 {
             self.inner().write.fetch_add(1, Relaxed);
+            println!("{}, {}, from clone_mut", Self::read_count(&self), Self::write_count(&self));
             unsafe { Self::from_inner(self.ptr) }
         } else {
             panic!("Write Error mut")
         }
     }
 }
+
+//BabaArcOrig自身は(0, 0), BabaArcMut(1, 1), BabaArcImmut(n, 0)
 
 impl<T> BabaArc<T> {
     pub fn new(data: T) -> BabaArc<T> {
@@ -121,7 +128,7 @@ impl<T> BabaArc<T> {
         let x: Box<_> = Box::new(BabaArcInner {
             strong: atomic::AtomicUsize::new(1),
             weak: atomic::AtomicUsize::new(1),
-            write: atomic::AtomicUsize::new(0),
+            write: atomic::AtomicUsize::new(0),//自身も含める 
             read: atomic::AtomicUsize::new(0),
             data,
         });
@@ -185,6 +192,7 @@ impl<T: ?Sized> Drop for BabaArc<T> {
 // }
 
 fn g (a: &BabaArc<String>) -> Result<JoinHandle<()>, std::io::Error>{
+    println!("{}, {}, from g", BabaArc::read_count(a), BabaArc::write_count(a));
     // let builder = thread::Builder::new();
     // let new_a = a.clone();
     unsafe{
@@ -193,6 +201,7 @@ fn g (a: &BabaArc<String>) -> Result<JoinHandle<()>, std::io::Error>{
             thread::sleep(Duration::from_secs(1));
             let new_a = BabaArc::clone_immut(a); //ここで問題が起きているっぽい?
             println!("{}", new_a);
+            println!("{}, {}, from g", BabaArc::read_count(a), BabaArc::write_count(a));
             drop(new_a)
         });
         
@@ -206,11 +215,14 @@ fn main() {
 
     let a = String::from("Hello");
 
+    let mut new_a = BabaArc::new(a);
+
     unsafe {
-        let mut new_a = BabaArc::new(a);
+        // let mut new_a = BabaArc::new(a);
+        
         // let check_a = &new_a;
 
-        println!("{}, {}", BabaArc::write_count(&new_a), BabaArc::read_count(&new_a));
+        println!("{}, {}, from main", BabaArc::read_count(&new_a), BabaArc::write_count(&new_a));
 
         let t1 = g(&new_a);//ここでcount +1
     
@@ -218,14 +230,16 @@ fn main() {
             {
                 let mut mut_a = BabaArc::clone_mut(&new_a);
                 mut_a.push_str("bbbb");
+                println!("{}, {}, from main", BabaArc::read_count(&new_a), BabaArc::write_count(&new_a));
             }
             
             let immut_a = BabaArc::clone_immut(&new_a);
-            println!("{}", immut_a);
+            println!("{}, from main", immut_a);
+            println!("{}, {}, from main", BabaArc::read_count(&new_a), BabaArc::write_count(&new_a));
             drop(immut_a);
         }).unwrap().join();
 
-        println!("{}, {}", BabaArc::write_count(&new_a), BabaArc::read_count(&new_a));
+        println!("{}, {}, from main", BabaArc::read_count(&new_a), BabaArc::write_count(&new_a));
 
     }
 
