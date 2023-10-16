@@ -287,3 +287,64 @@ impl<T: ?Sized> Drop for BabaArcImmut<T> {
         Self::decrement_read_count(&self);
     }
 }
+
+impl<T: ?Sized> Drop for BabaArcMut<T> {
+    fn drop(&mut self) {
+        Self::decrement_write_count(&self);
+    }
+}
+
+fn g (a: &BabaArcOrig<String>) -> Result<JoinHandle<()>, std::io::Error>{
+    println!("{}, {}, from g", BabaArcOrig::read_count(a), BabaArcOrig::write_count(a));
+    // let builder = thread::Builder::new();
+    // let new_a = a.clone();
+    unsafe{
+        let builder = thread::Builder::new();
+        let t1 = builder.spawn_unchecked(|| {
+            thread::sleep(Duration::from_secs(1));
+            let new_a = BabaArcOrig::clone_immut(a); //ここで問題が起きているっぽい?
+            println!("{}, from g", new_a);
+            println!("{}, {}, from g", BabaArcOrig::read_count(a), BabaArcOrig::write_count(a));
+            drop(new_a)
+        });
+        
+       return t1
+    }
+}
+
+fn main() {
+
+    let builder2 = thread::Builder::new();
+
+    let a = String::from("Hello");
+
+    let mut new_a = BabaArcOrig::new(a);
+
+    unsafe {
+        // let mut new_a = BabaArcOrig::new(a);
+
+        println!("{}, {}, from main", BabaArcOrig::read_count(&new_a), BabaArcOrig::write_count(&new_a));
+
+        let t1 = g(&new_a);//ここでcount +1
+    
+        let t2 = builder2.spawn_unchecked(|| {
+            {
+                let mut mut_a = BabaArcOrig::clone_mut(&new_a);
+                mut_a.push_str("bbbb");
+                println!("{}, {}, from main", BabaArcOrig::read_count(&new_a), BabaArcOrig::write_count(&new_a));
+            }
+            println!("{}, {}, from main", BabaArcOrig::read_count(&new_a), BabaArcOrig::write_count(&new_a));
+            let immut_a = BabaArcOrig::clone_immut(&new_a);
+            println!("{}, from main", immut_a);
+            println!("{}, {}, from main", BabaArcOrig::read_count(&new_a), BabaArcOrig::write_count(&new_a));
+            drop(immut_a);
+        }).unwrap().join();
+
+        println!("{}, {}, from main", BabaArcOrig::read_count(&new_a), BabaArcOrig::write_count(&new_a));
+
+    }
+
+    println!("{}, {}, from main", BabaArcOrig::read_count(&new_a), BabaArcOrig::write_count(&new_a));
+    thread::sleep(Duration::from_secs(2));
+    println!("{}, {}, from main", BabaArcOrig::read_count(&new_a), BabaArcOrig::write_count(&new_a));
+}

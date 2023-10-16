@@ -219,7 +219,7 @@ impl<T> BabaArcOrig<T> {
         let x: Box<_> = Box::new(BabaArcInner {
             strong: atomic::AtomicUsize::new(1),
             // weak: atomic::AtomicUsize::new(1),
-            write: atomic::AtomicUsize::new(0),//自身も含める 
+            write: atomic::AtomicUsize::new(0),
             read: atomic::AtomicUsize::new(0),
             data,
         });
@@ -302,10 +302,9 @@ fn g (a: &BabaArcOrig<String>) -> Result<JoinHandle<()>, std::io::Error>{
         let builder = thread::Builder::new();
         let t1 = builder.spawn_unchecked(|| {
             thread::sleep(Duration::from_secs(1));
-            let new_a = BabaArcOrig::clone_immut(a); //ここで問題が起きているっぽい?
+            let new_a = BabaArcOrig::clone_immut(a);
             println!("{}, from g", new_a);
             println!("{}, {}, from g", BabaArcOrig::read_count(a), BabaArcOrig::write_count(a));
-            drop(new_a)
         });
         
        return t1
