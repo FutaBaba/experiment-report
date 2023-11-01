@@ -1,0 +1,30 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202310/1026/thread_join_return$ cargo run
+   Compiling thread_join_return v0.1.0 (/home/baba/experiment-report/202310/1026/thread_join_return)
+warning: unused import: `std::sync::Arc`
+ --> src/main.rs:2:5
+  |
+2 | use std::sync::Arc;
+  |     ^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: variable does not need to be mutable
+ --> src/main.rs:4:9
+  |
+4 |     let mut a = String::from("Hello");
+  |         ----^
+  |         |
+  |         help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+
+warning: `thread_join_return` (bin "thread_join_return") generated 2 warnings (run `cargo fix --bin "thread_join_return"` to apply 2 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.77s
+     Running `target/debug/thread_join_return`
+hello from the first scoped thread
+Hello
+hello from the second scoped thread
+Worldxxxx
+hello from the main thread
+a = Helloaaaa, x = Worldxxxx
+baba@LAPTOP-A6A7D962:~/experiment-report/202310/1026/thread_join_return$
