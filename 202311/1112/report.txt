@@ -1,0 +1,4 @@
+Cigarette smokers problem
+たばこ、紙、マッチを無限に持っている人が三人いる
+
+Scoped Threadでできない例っていったい何?

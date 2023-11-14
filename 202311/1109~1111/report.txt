@@ -1,0 +1,20 @@
+厳しい実装
+=>implement_babaArc
+
+・実装について
+厳しくするかどうか
+=>Mutの時だけDropできるようにする(厳しい)
+=>そのあとできればImmutでもcountが1ならDropできるようにする
+
+・実装の説明でできるようにする
+具体的にはBuilderって何?とか
+
+・下の奴はScoped threadでできる?
+Cigarette smokers problem
+sleeping barbers problem
+
+11/12
+To do
+・とりあえずLatexでAbstとか目次書いてみる=>そのまま推敲
+・Cigarette smokers problemとかをscoped threadでできるか考える
+・（できれば）実装の説明ができるようにする

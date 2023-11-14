@@ -41,25 +41,25 @@ struct BabaArcInner<T: ?Sized> {
     // to avoid races in `make_mut` and `get_mut`.
     // weak: atomic::AtomicUsize,
 
-    write: atomic::AtomicUsize,
+    // write: atomic::AtomicUsize,
 
-    read: atomic::AtomicUsize,
+    // read: atomic::AtomicUsize,
 
     data: T,
 }
 
 impl<T: ?Sized> BabaArcImmut<T> {
     pub fn clone_immut(&self) -> BabaArcImmut<T> {
-        if Self::strong_count(&self) != 1 {
+        if Self::strong_count(&self) < 1 {
             panic!("already dropped");
         }
-        let old_size = self.inner().read.fetch_add(1, Relaxed);
+        let old_size = self.inner().strong.fetch_add(1, Relaxed);
         if old_size > MAX_REFCOUNT {
             abort();
         }
-        unsafe { BabaArcImmut::from_inner_immut(self.ptr) }
+        unsafe { BabaArcImmut::from_inner(self.ptr) }
     }
-    unsafe fn from_inner_immut(ptr: NonNull<BabaArcInner<T>>) -> Self {
+    unsafe fn from_inner(ptr: NonNull<BabaArcInner<T>>) -> Self {
         Self { ptr, phantom: PhantomData }
     }
 
@@ -72,46 +72,63 @@ impl<T: ?Sized> BabaArcImmut<T> {
         unsafe { self.ptr.as_ref() }
     }
 
-    pub fn write_count(this: &Self) -> usize {
-        this.inner().write.load(Acquire)
-    }
+    // pub fn write_count(this: &Self) -> usize {
+    //     this.inner().write.load(Acquire)
+    // }
 
-    pub fn read_count(this: &Self) -> usize {
-        this.inner().read.load(Acquire)
-    }
+    // pub fn read_count(this: &Self) -> usize {
+    //     this.inner().read.load(Acquire)
+    // }
 
     pub fn strong_count(this: &Self) -> usize {
         this.inner().strong.load(Acquire)
     }
 
-    pub fn increment_read_count(this: &Self) {
-        this.inner().read.fetch_add(1, Relaxed);
+    // pub fn increment_read_count(this: &Self) {
+    //     this.inner().read.fetch_add(1, Relaxed);
+    // }
+
+    // pub fn decrement_read_count(this: &Self) {
+    //     this.inner().read.fetch_sub(1, Relaxed);
+    // }
+    pub fn decrement_strong_count(this: &Self) {
+        this.inner().strong.fetch_sub(1, Relaxed);
     }
 
-    pub fn decrement_read_count(this: &Self) {
-        this.inner().read.fetch_sub(1, Relaxed);
+    pub fn gather(this: &Self, other: Self) {
+        //panic() さしている先は同じであるか
+        // this.inner().strong.fetch_sub(1, Relaxed);
+        // dropでcount減らしている
+    }
+
+    pub fn back_to_mut(this: Self) -> BabaArcMut<T> {
+        if Self::strong_count(&this) != 1{
+            panic!("cannot back to mut");
+        }
+        this.inner().strong.fetch_add(1, Relaxed);
+        unsafe { BabaArcMut::from_inner(this.ptr) }
     }
 }
 
 impl<T: ?Sized> BabaArcMut<T> {
     pub fn clone_immut(self) -> BabaArcImmut<T> {
-        if Self::strong_count(&self) != 1 {
+        if Self::strong_count(&self) < 1 {
             panic!("already dropped");
         }
-        let old_size = self.inner().read.fetch_add(1, Relaxed);
-        if old_size > MAX_REFCOUNT {
-            abort();
-        }
-        unsafe { BabaArcImmut::from_inner_immut(self.ptr) }
+        // let old_size = self.inner().strong.fetch_add(1, Relaxed);
+        // if old_size > MAX_REFCOUNT {
+        //     abort();
+        // }
+        unsafe { BabaArcImmut::from_inner(self.ptr) }
     }
 
     unsafe fn from_inner(ptr: NonNull<BabaArcInner<T>>) -> Self {
         Self { ptr, phantom: PhantomData }
     }
 
-    unsafe fn from_inner_mut(ptr: NonNull<BabaArcInner<T>>) -> Self {
-        Self { ptr, phantom: PhantomData }
-    }
+    // unsafe fn from_inner_mut(ptr: NonNull<BabaArcInner<T>>) -> Self {
+    //     Self { ptr, phantom: PhantomData }
+    // }
 
     fn inner(&self) -> &BabaArcInner<T> {
         // This unsafety is ok because while this arc is alive we're guaranteed
@@ -131,32 +148,36 @@ impl<T: ?Sized> BabaArcMut<T> {
         unsafe { self.ptr.as_mut() }
     }
 
-    pub fn write_count(this: &Self) -> usize {
-        this.inner().write.load(Acquire)
-    }
+    // pub fn write_count(this: &Self) -> usize {
+    //     this.inner().write.load(Acquire)
+    // }
 
-    pub fn read_count(this: &Self) -> usize {
-        this.inner().read.load(Acquire)
-    }
+    // pub fn read_count(this: &Self) -> usize {
+    //     this.inner().read.load(Acquire)
+    // }
 
     pub fn strong_count(this: &Self) -> usize {
         this.inner().strong.load(Acquire)
     }
 
-    pub fn increment_write_count(this: &Self) {
-        this.inner().write.fetch_add(1, Relaxed);
-    }
+    // pub fn increment_write_count(this: &Self) {
+    //     this.inner().write.fetch_add(1, Relaxed);
+    // }
 
-    pub fn decrement_write_count(this: &Self) {
-        this.inner().write.fetch_sub(1, Relaxed);
-    }
+    // pub fn decrement_write_count(this: &Self) {
+    //     this.inner().write.fetch_sub(1, Relaxed);
+    // }
 
-    pub fn increment_read_count(this: &Self) {
-        this.inner().read.fetch_add(1, Relaxed);
-    }
+    // pub fn increment_read_count(this: &Self) {
+    //     this.inner().read.fetch_add(1, Relaxed);
+    // }
 
-    pub fn decrement_read_count(this: &Self) {
-        this.inner().read.fetch_sub(1, Relaxed);
+    // pub fn decrement_read_count(this: &Self) {
+    //     this.inner().read.fetch_sub(1, Relaxed);
+    // }
+
+    pub fn decrement_strong_count(this: &Self) {
+        this.inner().strong.fetch_sub(1, Relaxed);
     }
 }
 
@@ -167,8 +188,8 @@ impl<T> BabaArcMut<T> {
         let x: Box<_> = Box::new(BabaArcInner {
             strong: atomic::AtomicUsize::new(1),
             // weak: atomic::AtomicUsize::new(1),
-            write: atomic::AtomicUsize::new(0),
-            read: atomic::AtomicUsize::new(0),
+            // write: atomic::AtomicUsize::new(0),
+            // read: atomic::AtomicUsize::new(0),
             data,
         });
         unsafe { Self::from_inner(Box::leak(x).into()) }
@@ -216,13 +237,15 @@ impl<T: ?Sized + fmt::Display> fmt::Display for BabaArcMut<T> {
 
 impl<T: ?Sized> Drop for BabaArcImmut<T> {
     fn drop(&mut self) {
-        Self::decrement_read_count(&self);
+        Self::decrement_strong_count(&self);
+        // count0になったらinner解放
     }
 }
 
 impl<T: ?Sized> Drop for BabaArcMut<T> {
     fn drop(&mut self) {
-        Self::decrement_write_count(&self);
+        // Self::decrement_strong_count(&self);
+        // To Do innerをDrop
     }
 }
 
@@ -286,9 +309,10 @@ fn main() {
     let mut new_a = BabaArcMut::new(a);
     new_a.push_str("aaaa");
 
-    unsafe {
         let a_1 = BabaArcMut::clone_immut(new_a);
+        // println!("{}, from main", BabaArcMut::strong_count(&new_a));
         let a_2 = BabaArcImmut::clone_immut(&a_1);
+    unsafe {
         let t1 = builder1.spawn_unchecked(|| {
             println!("{}",a_1);
         }).unwrap().join();
@@ -296,9 +320,15 @@ fn main() {
         let t2 = builder2.spawn_unchecked(|| {
             println!("{}",a_2);
         }).unwrap().join();
-        // new_a.push_str("aaaa");
-        // println!("{}", new_a);
-
     }
+        println!("{}, {}, from main", BabaArcImmut::strong_count(&a_1), BabaArcImmut::strong_count(&a_2));
+        BabaArcImmut::gather(&a_1, a_2);
+        // println!("{}, from main", BabaArcImmut::strong_count(&a_2));
+        println!("{}, from main", BabaArcImmut::strong_count(&a_1));
+        let mut a_3 = BabaArcImmut::back_to_mut(a_1);
+        // println!("{}, from main", BabaArcImmut::strong_count(&a_1));
+        a_3.push_str("aaaa");
+        println!("{}", a_3);
+
 
 }

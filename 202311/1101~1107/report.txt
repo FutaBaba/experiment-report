@@ -1,0 +1,56 @@
+To do
+・Abstructと目次の構成を考える
+
+Abstruct
+RustはOwnershipという概念によってメモリの解放が起きるタイミングが静的に決まる言語であり、
+組み込みシステムなどに用いられる。Rustでは、オブジェクトへの（広い意味での）参照にはownershipが付与されており、
+// 変数に束縛された値はownershipを持ち、//ownershipは何が持つ?
+オブジェクトのスコープが終了するときに変数に束縛されていた値は利用不可となる。//いつ利用不可になる?
+ownershipは、変数への代入や関数に引数を渡す際に移動する。また、変数の(Rustに特有の狭い意味での)参照を作成することで、
+ownerhsipを一時的に借りることができる。
+// Rustでは、参照が有効である静的な(プログラムの文面上の静的な)範囲はライフタイムと呼ばれる。
+
+複数スレッドによる並列処理でデータを共有する際、RustではArc(Atomically Reference Counted)とMutexによって、
+データレースを実行時に防いでいる。しかしRustでは、スレッドがjoinした際にownershipを返すことができないため
+join後にスレッド内で使われていたデータを使うことができない。この問題をRustでは、スレッドにスコープを与える
+ことで解決している。しかし、(関数で生成したthreadを、別のthreadでjoinする)
+場合はスレッドにスコープを与えても実現できない。
+
+そこで本研究では、fractional ownershipによりデータレースを実行時に防ぐことができる新たなArcを提案する。
+fractional ownershipにおいて、ownershipは0より大きく1以下の実数であり0より大きく1未満のとき読み込みのみ可能とし、
+1であれば読み込みも書き込みも可能にする。処理を行うときに、ownershipを分割したり集めることによってスレッドに
+スコープを与えても実現できない例を実現できるようにした。
+
+今後の課題は、fractional ownershipによるデータレースの検査を動的でなく静的に行えるようにすることが挙げられる。
+
+目次構成案
+
+第1章　序論
+1.1 背景 ()
+1.2 目的 ()
+1.3 本論文の構成
+
+第2章 準備
+2.1 RustのOwnership
+2.2 Rustでの並列処理
+    2.2.1 通常のスレッド(move, Arc, Mutex)
+    2.2.2 scoped thread
+2.3 問題点 (scoped threadでは不自由な例を考える)
+
+第3章 分数権限を動的に検査するArcの提案
+    3.1 インターフェース
+    3.2 実装
+    3.3 例
+
+第4章 考察と今後の課題
+
+第5章 結論
+
+・fractional Ownershipが必要な例を考える
+Producer-Consumer problem
+Dining philosophers problem
+
+Cigarette smokers problem
+sleeping barbers problem
+
+・実装の修正

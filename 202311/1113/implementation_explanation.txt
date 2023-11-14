@@ -1,0 +1,23 @@
+そもそもあの例できる?
+=>できた
+
+pub struct BabaArcImmut<T: ?Sized> {
+    ptr: NonNull<BabaArcInner<T>>,
+    phantom: PhantomData<BabaArcInner<T>>,
+}
+
+pub struct BabaArcMut<T: ?Sized> {
+    ptr: NonNull<BabaArcInner<T>>,
+    phantom: PhantomData<BabaArcInner<T>>,
+}
+
+NonNullとは
+nullでないポインタの型
+BoxやRaw pointerではだめなのか?
+
+そもそも、NonNullの中身は自動でDropされてはいけない
+=>生ポインタはfreeが手動である
+
+Boxでは自動でfreeされてしまう
+
+Raw pointerでないのは...?
