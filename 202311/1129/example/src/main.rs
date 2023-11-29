@@ -20,7 +20,7 @@ fn main() {
 
     t1.join();
     t2.join();
-    let mut a4 = Arc::into_inner(a1).unwrap();
-    a4.push_str("World");
-    println!("{}", a4);
+    let mut s4 = Arc::into_inner(s).unwrap();
+    s4.push_str("World");
+    println!("{}", s4);
 } 
