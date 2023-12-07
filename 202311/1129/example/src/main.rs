@@ -3,8 +3,8 @@ use std::sync::Mutex;
 use std::thread;
 use std::thread::Builder;
 
-fn my_spawn (a: Arc<String>) -> thread::JoinHandle<()> {
-    let t = thread::spawn(move || {
+fn my_spawn (a: &Arc<String>) -> thread::JoinHandle<()> {
+    let t = thread::spawn(|| {
         println!("{}", a);
     });       
    return t
@@ -12,11 +12,11 @@ fn my_spawn (a: Arc<String>) -> thread::JoinHandle<()> {
 
 fn main() {
     let s = Arc::new(String::from("Hello"));
-    let s1 = s.clone();
-    let s2 = s.clone();
+    let s1 = s.clone(); // +1
+    let s2 = s.clone(); // +1
     
-    let t1 = my_spawn(s1);
-    let t2 = my_spawn(s2);
+    let t1 = my_spawn(&s1); // -1
+    let t2 = my_spawn(&s2); // -1
 
     t1.join();
     t2.join();

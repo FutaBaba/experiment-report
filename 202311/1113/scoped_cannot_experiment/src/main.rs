@@ -29,6 +29,7 @@ pub struct BabaArcImmut<T: ?Sized> {
 
 pub struct BabaArcMut<T: ?Sized> {
     ptr: NonNull<BabaArcInner<T>>,
+    // NonNullでなくただのオブジェクト
     // phantom: PhantomData<BabaArcInner<T>>,
 }
 
@@ -73,9 +74,6 @@ impl<T: ?Sized> BabaArcImmut<T> {
     }
 
     pub fn gather(this: &Self, other: Self) {
-        //panic() さしている先は同じであるか
-        // this.inner().strong.fetch_sub(1, Relaxed);
-        // dropでcount減らしている
         if this.ptr.addr() != other.ptr.addr() {
             panic!("different reference");
         }
@@ -88,30 +86,13 @@ impl<T: ?Sized> BabaArcImmut<T> {
         this.inner().strong.fetch_add(1, Relaxed);
         unsafe { BabaArcMut::from_inner(this.ptr) }
     }
-
-    unsafe fn drop_slow(&mut self) {
-        // Destroy the data at this time, even though we must not free the box
-        // allocation itself (there might still be weak pointers lying around).
-        unsafe { ptr::drop_in_place(Self::get_mut_unchecked(self)) };
-
-        // Drop the weak ref collectively held by all strong references
-        // Take a reference to `self.alloc` instead of cloning because 1. it'll
-        // last long enough, and 2. you should be able to drop `Arc`s with
-        // unclonable allocators
-        // drop(Weak { ptr: self.ptr, alloc: &self.alloc });
-    }
-
-    pub unsafe fn get_mut_unchecked(this: &mut Self) -> &mut T {
-        // We are careful to *not* create a reference covering the "count" fields, as
-        // this would alias with concurrent access to the reference counts (e.g. by `Weak`).
-        unsafe { &mut (*this.ptr.as_ptr()).data }
-    }
 }
 
 impl<T: ?Sized> BabaArcMut<T> {
     pub fn clone_immut(self) -> BabaArcImmut<T> {
-        let this = ManuallyDrop::new(self.ptr);
-        unsafe { BabaArcImmut::from_inner(*this) }
+        // let this = ManuallyDrop::new(self.ptr);
+        // ToDo test
+        unsafe { BabaArcImmut::from_inner(self.ptr) }
     }
 
     unsafe fn from_inner(ptr: NonNull<BabaArcInner<T>>) -> Self {
@@ -215,18 +196,17 @@ impl<T: ?Sized> Drop for BabaArcImmut<T> {
         if self.inner().strong.fetch_sub(1, Relaxed) == 1{
             panic!("cannot drop")
         }
-        // Self::decrement_strong_count(&self);
+        // ToDo 1未満だとエラー
         // count0になったら=>error
     }
 }
 
 impl<T: ?Sized> Drop for BabaArcMut<T> {
     fn drop(&mut self) {
-        // Self::decrement_strong_count(&self);
-        // To Do strongのcountを確認してから開放
         if Self::strong_count(self) == 0 {
             unsafe { self.drop_slow(); }
         }
+        //ToDo else => panic
     }
 }
 
