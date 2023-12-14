@@ -175,9 +175,11 @@ fn main() {
     for x in vec {
         if x.deref() == &String::from("Hello") {
             println!("dropped");
+            // vecから削除
             drop(x);
         }
     }
+    // vec使う
     let mut s4 = s3.back_to_mut();
     s4.push_str("World");
     println!("{}, from main", s4);
