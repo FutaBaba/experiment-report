@@ -173,9 +173,10 @@ fn main() {
     vec.push(ss2);
     
     let new_s1 = vec.remove(0);
-    let new_s2 = vec.remove(1);
     drop(new_s1);
+    let new_s2 = vec.remove(1);
     drop(new_s2);
+    // removehello 関数
     let mut s4 = s3.back_to_mut();
     s4.push_str("World");
     println!("{}, from main", s4);
@@ -187,5 +188,6 @@ fn main() {
     let mut ss4 = ss3.back_to_mut();
     ss4.push_str("World");
     println!("{}, from main", ss4);
+    // Rustでできる
 }
 // 配列
