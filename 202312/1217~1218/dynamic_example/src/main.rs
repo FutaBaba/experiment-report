@@ -17,6 +17,7 @@ fn main() {
 
     let mut i = 0;
     while  i < vec.len() {
+        // 左辺をStringに
         if vec[i] == RefMut::new(String::from("Hello")).to_immut() {
             vec.remove(i);
         }

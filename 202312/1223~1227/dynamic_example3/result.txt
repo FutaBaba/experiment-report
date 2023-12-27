@@ -1,0 +1,34 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202312/1223~1227/dynamic_example3$ cargo run
+   Compiling dynamic_example3 v0.1.0 (/home/baba/experiment-report/202312/1223~1227/dynamic_example3)
+warning: unused variable: `w`
+  --> src/main.rs:18:13
+   |
+18 |     let mut w = RefMut::new(String::from("World"));
+   |             ^ help: if this is intentional, prefix it with an underscore: `_w`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:17:9
+   |
+17 |     let mut h = RefMut::new(String::from("Hello"));
+   |         ----^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:18:9
+   |
+18 |     let mut w = RefMut::new(String::from("World"));
+   |         ----^
+   |         |
+   |         help: remove this `mut`
+
+warning: `dynamic_example3` (bin "dynamic_example3") generated 3 warnings (run `cargo fix --bin "dynamic_example3"` to apply 3 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.42s
+     Running `target/debug/dynamic_example3`
+HelloWorld, from main
+true
+baba@LAPTOP-A6A7D962:~/experiment-report/202312/1223~1227/dynamic_example3$
