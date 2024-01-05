@@ -1,6 +1,7 @@
 use dynamic_example::new_ref::RefImmut;
 use dynamic_example::new_ref::RefMut;
 fn remove_string(vec: &mut Vec<RefImmut<String>>, s: String) {
+    // TODO イテレータ
     let mut i = 0;
     while  i < vec.len() {
         if *vec[i] == s {
@@ -29,7 +30,7 @@ fn main() {
 
     remove_string(&mut vec, String::from("Hello"));
     let mut h4 = h3.back_to_mut();
-    h4.push_str("World");
+    h4.push_str("hhhhh");
     println!("{}, from main", h4);
 
     for i in 0..2 {

@@ -1,0 +1,27 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202401/0102/dynamic_error_example$ cargo run
+   Compiling dynamic_error_example v0.1.0 (/home/baba/experiment-report/202401/0102/dynamic_error_example)
+warning: variable does not need to be mutable
+ --> src/main.rs:9:9
+  |
+9 |     let mut h = RefMut::new(String::from("Hello"));
+  |         ----^
+  |         |
+  |         help: remove this `mut`
+  |
+  = note: `#[warn(unused_mut)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:10:9
+   |
+10 |     let mut w = RefMut::new(String::from("World"));
+   |         ----^
+   |         |
+   |         help: remove this `mut`
+
+warning: `dynamic_error_example` (bin "dynamic_error_example") generated 2 warnings (run `cargo fix --bin "dynamic_error_example"` to apply 2 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.54s
+     Running `target/debug/dynamic_error_example`
+thread 'main' panicked at /home/baba/experiment-report/202401/0102/dynamic_error_example/src/lib.rs:69:17:
+cannot back to mut
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+baba@LAPTOP-A6A7D962:~/experiment-report/202401/0102/dynamic_error_example$

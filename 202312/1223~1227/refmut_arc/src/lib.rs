@@ -8,13 +8,6 @@ pub mod new_ref {
     use core::ops::Deref;
     use core::fmt;
     use core::ops::DerefMut;
-    use std::marker::PhantomData;
-
-    const MAX_REFCOUNT: usize = (isize::MAX) as usize;
-    unsafe impl<T: Sync + Send> Send for RefImmut<T> {}
-    unsafe impl<T: Sync + Send> Send for RefMut<T> {}
-    unsafe impl<T: Sync + Send> Sync for RefImmut<T> {}
-    unsafe impl<T: Sync + Send> Sync for RefMut<T> {}
 
     pub struct RefImmut<T> {
         arc: Arc<T>,
@@ -24,22 +17,20 @@ pub mod new_ref {
         data: T,
     }
 
-    impl<T: std::cmp::PartialEq> RefImmut<T> {
+    impl<T> RefImmut<T> {
         pub fn clone_immut(&self) -> RefImmut<T> {
             RefImmut { arc: Arc::clone(&self.arc) }
         }
 
+        // pub fn into_arc(self) -> Arc<T> {
+        //     self.arc
+        // }
+
         pub fn back_to_mut(self) -> RefMut<T> {
-            let another = Arc::clone(&self.arc);
-            let ptr = Arc::into_raw(another);
-            unsafe {
-                Arc::decrement_strong_count(ptr);
-                let new_another = Arc::from_raw(ptr);
-                let inner = Arc::into_inner(new_another);
-                if inner == None {
-                    panic!("cannot back to mut");
-                }
-                RefMut { data: inner.unwrap() }
+            let inner = Arc::into_inner(self.arc);
+            match inner {
+                None => panic!("cannot back to mut"),
+                Some(data) => RefMut { data: data }
             }
         }
     }
@@ -51,6 +42,10 @@ pub mod new_ref {
 
         pub fn to_immut(self) -> RefImmut<T> {
             RefImmut {arc: Arc::new(self.data)}
+        }
+
+        pub fn into_inner(self) -> T {
+            self.data
         }
     }
 
@@ -89,31 +84,5 @@ pub mod new_ref {
         }
     }
 
-    impl<T> Drop for RefImmut<T> {
-        fn drop(&mut self) {
-            drop(&mut self.arc)
-        }
-    }
-    impl<T: PartialEq> PartialEq for RefMut<T> {
-        #[inline]
-        fn eq(&self, other: &RefMut<T>) -> bool {
-            **self == **other
-        }
-        #[inline]
-        fn ne(&self, other: &RefMut<T>) -> bool {
-            **self != **other
-        }
-    }
-    impl<T: PartialEq> PartialEq for RefImmut<T> {
-        #[inline]
-        fn eq(&self, other: &RefImmut<T>) -> bool {
-            **self == **other
-        }
-        #[inline]
-        fn ne(&self, other: &RefImmut<T>) -> bool {
-            **self != **other
-        }
-    }
-    impl<T: Eq> Eq for RefMut<T> {}
-    impl<T: Eq> Eq for RefImmut<T> {}
+    // drop
 }

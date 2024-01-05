@@ -1,0 +1,50 @@
+baba@LAPTOP-A6A7D962:~/experiment-report/202401/0105/dynamic_error_example2$ cargo run
+    Updating crates.io index
+   Compiling libc v0.2.151
+   Compiling cfg-if v1.0.0
+   Compiling ppv-lite86 v0.2.17
+   Compiling getrandom v0.2.11
+   Compiling rand_core v0.6.4
+   Compiling rand_chacha v0.3.1
+   Compiling rand v0.8.5
+   Compiling dynamic_error_example2 v0.1.0 (/home/baba/experiment-report/202401/0105/dynamic_error_example2)
+warning: unused import: `thread_rng`
+ --> src/main.rs:3:17
+  |
+3 | use rand::{Rng, thread_rng};
+  |                 ^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:11:9
+   |
+11 |     let mut h = RefMut::new(String::from("Hello"));
+   |         ----^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/main.rs:12:9
+   |
+12 |     let mut w = RefMut::new(String::from("World"));
+   |         ----^
+   |         |
+   |         help: remove this `mut`
+
+warning: `dynamic_error_example2` (bin "dynamic_error_example2") generated 3 warnings (run `cargo fix --bin "dynamic_error_example2"` to apply 3 suggestions)
+    Finished dev [unoptimized + debuginfo] target(s) in 32.72s
+     Running `target/debug/dynamic_error_example2`
+World
+Hello
+World
+Hello
+World
+World
+Worldwwwww, from main
+thread 'main' panicked at /home/baba/experiment-report/202401/0105/dynamic_error_example2/src/lib.rs:154:17:
+cannot drop
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+baba@LAPTOP-A6A7D962:~/experiment-report/202401/0105/dynamic_error_example2$
