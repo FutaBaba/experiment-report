@@ -20,6 +20,7 @@ pub mod fractional_ref {
     use std::thread::panicking;
     use std::mem::forget;
     use std::alloc::alloc;
+    use core::marker::PhantomData;
 
     const MAX_REFCOUNT: usize = (isize::MAX) as usize;
     unsafe impl<T: ?Sized + Sync + Send> Send for FRefImmut<T> {}
@@ -28,7 +29,8 @@ pub mod fractional_ref {
     unsafe impl<T: ?Sized + Sync + Send> Sync for FRefMut<T> {}
 
     pub struct FRefImmut<T: ?Sized> {
-        ptr: NonNull<FRefInner<T>>
+        ptr: NonNull<FRefInner<T>>,
+        phantom: PhantomData<FRefInner<T>>
     }
 
     pub struct FRefMut<T: ?Sized> {
@@ -46,7 +48,7 @@ pub mod fractional_ref {
             if old_size > MAX_REFCOUNT {
                 abort();
             }
-            FRefImmut { ptr: self.ptr }
+            FRefImmut { ptr: self.ptr, phantom: PhantomData }
         }
 
         fn inner(&self) -> &FRefInner<T> {
@@ -97,18 +99,14 @@ pub mod fractional_ref {
         }
 
         pub fn to_immut(mut self: FRefMut<T>) -> FRefImmut<T> {
-            // let mut this = ManuallyDrop::new(self);
-            let inner = unsafe{ptr::read(&mut self.data)};
-            // unsafe {
-            //     dealloc(alloc(Layout::for_value(&this.data)), Layout::for_value(&this.data));
-            // }
-            forget(self);
+            let mut this = ManuallyDrop::new(self);
+            let inner = unsafe{ptr::read(&mut this.data)};
             let x = Box::new(FRefInner {
                 ref_count: AtomicUsize::new(1),
                 data: inner,
             });
              //　TODO 本当に大丈夫か？
-            FRefImmut {ptr: Box::leak(x).into()}
+            FRefImmut {ptr: Box::leak(x).into(), phantom:PhantomData}
         }
     }
 
@@ -150,19 +148,15 @@ pub mod fractional_ref {
     impl<T: ?Sized> Drop for FRefImmut<T> {
         fn drop(&mut self) {
             let count = self.inner().ref_count.fetch_sub(1, Relaxed);
+            atomic::fence(Acquire);
             if count > 1{
                 return
-            }
-            else if count == 1{
-                unsafe {
-                    dealloc(self.ptr.cast().as_mut(), Layout::for_value_raw(self.ptr.as_ptr()))
+            } else if count == 1{
+                unsafe { ptr::drop_in_place(self.ptr.as_ptr()) };
+                if !panicking() {
+                    panic!("cannot drop");
                 }
-                if panicking() {
-                    return
-                }
-                panic!("cannot drop");
-            }
-            else {
+            } else {
                 abort();
             }
         }

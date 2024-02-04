@@ -27,7 +27,7 @@ fn main() {
           }
         }
         remove_string(&mut vec, String::from("Hello"));
-        h_immut.back_to_mut();
+        // h_immut.back_to_mut();
       }
       // hとwは用いず、vecを用いる処理
     }
