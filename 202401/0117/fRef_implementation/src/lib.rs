@@ -19,6 +19,7 @@ pub mod fractional_ref {
     use std::alloc::dealloc;
     use std::thread::panicking;
     use std::mem::forget;
+    use std::alloc::alloc;
 
     const MAX_REFCOUNT: usize = (isize::MAX) as usize;
     unsafe impl<T: ?Sized + Sync + Send> Send for FRefImmut<T> {}
@@ -73,7 +74,7 @@ pub mod fractional_ref {
                 panic!("cannot back to mut");
             }
             let mut this = ManuallyDrop::new(self);
-            let inner = unsafe { ptr::read(Self::get_mut_unchecked(&mut this))};
+            let inner = unsafe { ptr::read(&mut (*this.ptr.as_ptr()).data)};
             unsafe {
                 dealloc(this.ptr.cast().as_mut(), Layout::for_value_raw(this.ptr.as_ptr()))
             }
@@ -98,11 +99,15 @@ pub mod fractional_ref {
         pub fn to_immut(mut self: FRefMut<T>) -> FRefImmut<T> {
             // let mut this = ManuallyDrop::new(self);
             let inner = unsafe{ptr::read(&mut self.data)};
-            let x: Box<_> = Box::new(FRefInner {
+            // unsafe {
+            //     dealloc(alloc(Layout::for_value(&this.data)), Layout::for_value(&this.data));
+            // }
+            forget(self);
+            let x = Box::new(FRefInner {
                 ref_count: AtomicUsize::new(1),
                 data: inner,
             });
-            forget(self); //　TODO 本当に大丈夫か？
+             //　TODO 本当に大丈夫か？
             FRefImmut {ptr: Box::leak(x).into()}
         }
     }
@@ -149,11 +154,11 @@ pub mod fractional_ref {
                 return
             }
             else if count == 1{
-                if panicking() {
-                    return
-                }
                 unsafe {
                     dealloc(self.ptr.cast().as_mut(), Layout::for_value_raw(self.ptr.as_ptr()))
+                }
+                if panicking() {
+                    return
                 }
                 panic!("cannot drop");
             }

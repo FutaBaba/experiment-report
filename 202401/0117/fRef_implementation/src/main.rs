@@ -7,8 +7,8 @@ fn remove_string(vec: &mut Vec<FRefImmut<String>>, s: String) {
 }
 
 fn main() {
-    let mut w = FRefMut::new(String::from("World"));
-    let w_immut = w.to_immut();
+    let mut w = FRefMut::new(String::from("World")).to_immut();
+    // let w_immut = w.to_immut();
     {
       let mut vec: Vec<FRefImmut<String>> = Vec::new();
       let mut h = FRefMut::new(String::from("Hello"));
@@ -22,16 +22,16 @@ fn main() {
             vec.push(h_immut1);
           }
           else {
-            let w_immut1 = w_immut.clone_immut();
+            let w_immut1 = w.clone_immut();
             vec.push(w_immut1);
           }
         }
         remove_string(&mut vec, String::from("Hello"));
-        h_immut.back_and_drop();
+        h_immut.back_to_mut();
       }
       // hとwは用いず、vecを用いる処理
     }
-  let mut w_mut = w_immut.back_to_mut();
+  w.back_to_mut();
 }
   
 // fn remove_string(vec: &mut Vec<FRefImmut<String>>, s: String) {
