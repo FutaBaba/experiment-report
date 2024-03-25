@@ -7,6 +7,6 @@ fn main() {
     let ref_immut1 = ref_mut.to_immut();
     let ref_immut2 = ref_immut1.clone_immut();
     drop(ref_immut2);
-    let new_mut = ref_immut1.back_to_mut();
-    println!("{}", new_mut);
+    // let new_mut = ref_immut1.back_to_mut();
+    // println!("{}", new_mut);
 }

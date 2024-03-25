@@ -91,7 +91,7 @@ pub mod new_ref {
             &mut *this
         }
 
-        pub fn to_immut(self) -> RefImmut<T> {
+        pub fn to_immut(self: RefMut<T>) -> RefImmut<T> {
             // ToDo test
             let mut this = ManuallyDrop::new(self);
             let inner = unsafe{ptr::read(Self::get_mut_unchecked(&mut this))};

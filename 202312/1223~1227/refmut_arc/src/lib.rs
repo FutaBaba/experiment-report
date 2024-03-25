@@ -4,13 +4,16 @@
 #![feature(layout_for_ptr)]
 #![feature(allocator_api)]
 pub mod new_ref {
-    use std::sync::Arc;
+    use std::rc::Rc;
     use core::ops::Deref;
     use core::fmt;
     use core::ops::DerefMut;
+    use std::thread::panicking;
+    use std::process::abort;
+    use std::mem::ManuallyDrop;
 
     pub struct RefImmut<T> {
-        arc: Arc<T>,
+        rc: Rc<T>,
     }
 
     pub struct RefMut<T> {
@@ -19,15 +22,15 @@ pub mod new_ref {
 
     impl<T> RefImmut<T> {
         pub fn clone_immut(&self) -> RefImmut<T> {
-            RefImmut { arc: Arc::clone(&self.arc) }
+            RefImmut { rc: Rc::clone(&self.rc) }
         }
 
-        // pub fn into_arc(self) -> Arc<T> {
-        //     self.arc
-        // }
+        pub fn into_rc(self) -> Rc<T> {
+            self.rc
+        }
 
         pub fn back_to_mut(self) -> RefMut<T> {
-            let inner = Arc::into_inner(self.arc);
+            let inner = Rc::into_inner(self.rc);
             match inner {
                 None => panic!("cannot back to mut"),
                 Some(data) => RefMut { data: data }
@@ -41,7 +44,7 @@ pub mod new_ref {
         }
 
         pub fn to_immut(self) -> RefImmut<T> {
-            RefImmut {arc: Arc::new(self.data)}
+            RefImmut {rc: Rc::new(self.data)}
         }
 
         pub fn into_inner(self) -> T {
@@ -53,7 +56,7 @@ pub mod new_ref {
         type Target = T;
         #[inline]
         fn deref(&self) -> &T {
-            &self.arc
+            &self.rc
         }
     }
 
@@ -84,5 +87,22 @@ pub mod new_ref {
         }
     }
 
-    // drop
+    impl<T> Drop for RefImmut<T> {
+        fn drop(&mut self) {
+            let count = Rc::strong_count(&self.rc);
+            if count > 1{
+                drop(self);
+            }
+            else if count == 1{
+                if panicking() {
+                    return
+                }
+                drop(self);
+                panic!("cannot drop");
+            }
+            else {
+                abort();
+            }
+        }
+    }
 }

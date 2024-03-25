@@ -73,7 +73,7 @@ pub mod fractional_ref {
     impl<T> FRefImmut<T> {
         pub fn back_to_mut(self) -> FRefMut<T> {
             if self.inner().ref_count.load(Acquire) != 1{
-                panic!("cannot back to mut");
+                panic!("count != 1");
             }
             let mut this = ManuallyDrop::new(self);
             let inner = unsafe { ptr::read(&mut (*this.ptr.as_ptr()).data)};
@@ -99,13 +99,12 @@ pub mod fractional_ref {
         }
 
         pub fn to_immut(mut self: FRefMut<T>) -> FRefImmut<T> {
-            let mut this = ManuallyDrop::new(self);
-            let inner = unsafe{ptr::read(&mut this.data)};
+            let mut d = ManuallyDrop::new(self.data);
+            let inner = unsafe{ptr::read(d.deref_mut())};
             let x = Box::new(FRefInner {
                 ref_count: AtomicUsize::new(1),
                 data: inner,
             });
-             //　TODO 本当に大丈夫か？
             FRefImmut {ptr: Box::leak(x).into(), phantom:PhantomData}
         }
     }
@@ -154,7 +153,7 @@ pub mod fractional_ref {
             } else if count == 1{
                 unsafe { ptr::drop_in_place(self.ptr.as_ptr()) };
                 if !panicking() {
-                    panic!("cannot drop");
+                    panic!("drop without back_to_mut");
                 }
             } else {
                 abort();
@@ -183,4 +182,9 @@ pub mod fractional_ref {
     }
     impl<T: Eq> Eq for FRefMut<T> {}
     impl<T: Eq> Eq for FRefImmut<T> {}
+    impl<T: ?Sized> AsRef<T> for FRefImmut<T> {
+        fn as_ref(&self) -> &T {
+            &self.inner().data
+        }
+    }
 }
